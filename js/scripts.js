@@ -97,17 +97,6 @@ function mouseClickFunction(e) {
 //     geojson.resetStyle(e.target);
 // }
 
-// $.ajax({
-//     url: "https://data.cityofnewyork.us/resource/fhrw-4uyv.json",
-//     type: "GET",
-//     data: {
-//       // "$limit" : 5000,
-//       "$$app_token" : "TA8ytxeF7s5CL1q8wOU1dbmnL",
-//       "complaint_type" : "Noise",
-//       "incident_zip" : '11201'
-//     }
-// });
-
 function onLocationError(e) {
     alert(e.message);
 }
