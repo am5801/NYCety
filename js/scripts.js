@@ -80,8 +80,9 @@ function mouseClickFunction(e) {
     console.log(layer.feature.properties.postalCode + ', ' + layer.feature.properties.borough);
     
     // $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.json?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&$where=within_circle(location, '+layer.feature.properties.latitude+', '+layer.feature.properties.longitude+ ', 402)', function(zip_comps) {
+    // $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&incident_zip='+layer.feature.properties.postalCode+'&$limit=5000', function(zip_comps) {
     // $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.json?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL'+'&incident_zip='+layer.feature.properties.postalCode+'&complaint_type=Noise', function(zip_comps) {
-    $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&incident_zip='+layer.feature.properties.postalCode, function(zip_comps) {    
+    $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&incident_zip='+layer.feature.properties.postalCode, function(zip_comps) {
         geojson = L.geoJson(zip_comps, {
             pointToLayer: function(feature, latlng) {
                 return L.circleMarker(latlng, geojsonMarkerOptions);
