@@ -1,12 +1,12 @@
 var map = L.map('map').fitWorld();
 
 var geojsonMarkerOptions = {
-    radius: 8,
-    fillColor: "#ff7800",
-    color: "#000",
+    radius: 4,
+    fillColor: "red",
+    color: "",
     weight: 1,
     opacity: 1,
-    fillOpacity: 0.8
+    fillOpacity: 0.3
 };
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
@@ -81,12 +81,13 @@ function mouseClickFunction(e) {
     
     // $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.json?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&$where=within_circle(location, '+layer.feature.properties.latitude+', '+layer.feature.properties.longitude+ ', 402)', function(zip_comps) {
     // $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.json?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL'+'&incident_zip='+layer.feature.properties.postalCode+'&complaint_type=Noise', function(zip_comps) {
-    //     geojson = L.geoJson(zip_comps, {
-    //         pointToLayer: function(zip_comps, latlng) {
-    //             return L.circleMarker(latlng, geojsonMarkerOptions);
-    //         }
-    //     }).addTo(map);
-    // });
+    $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&incident_zip='+layer.feature.properties.postalCode, function(zip_comps) {    
+        geojson = L.geoJson(zip_comps, {
+            pointToLayer: function(feature, latlng) {
+                return L.circleMarker(latlng, geojsonMarkerOptions);
+            }
+        }).addTo(map);
+    });
 
     lastClickedLayer = layer;
 }
