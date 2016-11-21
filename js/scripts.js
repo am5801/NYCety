@@ -9,17 +9,6 @@ var geojsonMarkerOptions = {
     fillOpacity: 0.8
 };
 
-$.ajax({
-    url: "https://data.cityofnewyork.us/resource/fhrw-4uyv.json",
-    type: "GET",
-    data: {
-      // "$limit" : 5000,
-      "$$app_token" : "TA8ytxeF7s5CL1q8wOU1dbmnL",
-      "complaint_type" : "Noise",
-      "incident_zip" : layer.feature.properties.postalCode
-    }
-});
-
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
     maxZoom: 18,
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
@@ -66,9 +55,15 @@ function onEachFeature(feature, layer) {
     });
 }
 
+    var lastClickedLayer;
+
 function mouseClickFunction(e) {
-    // this.reset; reset the zip code boundaries
     var layer = e.target;
+
+
+    if(lastClickedLayer){
+        geojson.resetStyle(lastClickedLayer);
+    }
 
     layer.setStyle({
         weight: 3,
@@ -92,13 +87,25 @@ function mouseClickFunction(e) {
     //         }
     //     }).addTo(map);
     // });
+
+    lastClickedLayer = layer;
 }
 
+// this runs on mouseout
+// function resetHighlight(e) {
+//     geojson.resetStyle(e.target);
+// }
 
-//this runs on mouseout
-function resetHighlight(e) {
-    geojson.resetStyle(e.target);
-}
+$.ajax({
+    url: "https://data.cityofnewyork.us/resource/fhrw-4uyv.json",
+    type: "GET",
+    data: {
+      // "$limit" : 5000,
+      "$$app_token" : "TA8ytxeF7s5CL1q8wOU1dbmnL",
+      "complaint_type" : "Noise",
+      "incident_zip" : '11201'
+    }
+});
 
 function onLocationError(e) {
     alert(e.message);
