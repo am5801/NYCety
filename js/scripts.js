@@ -59,7 +59,7 @@ function onEachFeature(feature, layer) {
 
 function mouseClickFunction(e) {
     layer = e.target;
-
+    geojson_comps.clearLayers();
     if(lastClickedLayer != layer){
         // map.removeLayer(lastClickedLayer);
         layer.setStyle({
