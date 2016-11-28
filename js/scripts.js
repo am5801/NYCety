@@ -60,8 +60,9 @@ function onEachFeature(feature, layer) {
 function mouseClickFunction(e) {
     layer = e.target;
     geojson_comps.clearLayers();
+
     if(lastClickedLayer != layer){
-        // map.removeLayer(lastClickedLayer);
+
         layer.setStyle({
             weight: 3,
             color: 'green',
@@ -73,7 +74,7 @@ function mouseClickFunction(e) {
             layer.bringToFront();
         }
 
-        //update the text in the infowindow with whatever was in the data
+        // show the zip code and borough of the clicked polygon in console log
         console.log(layer.feature.properties.postalCode + ', ' + layer.feature.properties.borough);
         
         $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&$limit=5000&incident_zip='+layer.feature.properties.postalCode, function(zip_comps) {
