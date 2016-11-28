@@ -1,6 +1,7 @@
 var map = L.map('map').fitWorld();
 var lastClickedLayer;
-var geojson;
+var geojson_zips;
+var geojson_comps = new L.FeatureGroup();
 var layer;
 var geojsonMarkerOptions = {
     radius: 4,
@@ -30,7 +31,7 @@ function onLocationFound(e) {
 
 //get zip codes geojson file and add it to the map
 $.getJSON('data/zips.geojson', function(zip_codes) {
-    geojson = L.geoJson(zip_codes, {
+    geojson_zips = L.geoJson(zip_codes, {
         style: style,
         onEachFeature: onEachFeature
     }).addTo(map);
@@ -60,6 +61,7 @@ function mouseClickFunction(e) {
     layer = e.target;
 
     if(lastClickedLayer != layer){
+        // map.removeLayer(lastClickedLayer);
         layer.setStyle({
             weight: 3,
             color: 'green',
@@ -74,20 +76,18 @@ function mouseClickFunction(e) {
         //update the text in the infowindow with whatever was in the data
         console.log(layer.feature.properties.postalCode + ', ' + layer.feature.properties.borough);
         
-        // $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.json?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&$where=within_circle(location, '+layer.feature.properties.latitude+', '+layer.feature.properties.longitude+ ', 402)', function(zip_comps) {
-        // $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&incident_zip='+layer.feature.properties.postalCode+'&$limit=5000', function(zip_comps) {
-        // $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.json?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL'+'&incident_zip='+layer.feature.properties.postalCode+'&complaint_type=Noise', function(zip_comps) {
         $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&$limit=5000&incident_zip='+layer.feature.properties.postalCode, function(zip_comps) {
-            geojson = L.geoJson(zip_comps, {
-                pointToLayer: function(feature, latlng) {
-                    return L.circleMarker(latlng, geojsonMarkerOptions);
-                }
-            }).addTo(map);
-        });
+                var comps = L.geoJson(zip_comps, {
+                    pointToLayer: function(feature, latlng) {
+                        return L.circleMarker(latlng, geojsonMarkerOptions);
+                    }
+                });
+                geojson_comps.addLayer(comps);
+            });
+        map.addLayer(geojson_comps);
     } else {
-        map.removeLayer(geojson);
+        geojson_comps.clearLayers();
     }
-
     lastClickedLayer = layer;
 }
 
@@ -96,77 +96,94 @@ function mouseClickFunction(e) {
 //     geojson.resetStyle(e.target);
 // }
 
+// Clear Complaints
+$("#clearComp").click(function(){
+    geojson_comps.clearLayers();
+});
+
 
 // All Complaints
 $("#allComp").click(function(){
-    map.removeLayer(geojson);
+    geojson_comps.clearLayers();
     $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&$limit=5000&incident_zip='+layer.feature.properties.postalCode, function(zip_comps) {
-            geojson = L.geoJson(zip_comps, {
+            var comps = L.geoJson(zip_comps, {
                 pointToLayer: function(feature, latlng) {
                     return L.circleMarker(latlng, geojsonMarkerOptions);
                 }
-            }).addTo(map);
+            });
+            geojson_comps.addLayer(comps);
         });
+    map.addLayer(geojson_comps);
 });
 
 // Dirty Conditions Complaints
 $("#dirty").click(function(){
-    map.removeLayer(geojson);
+    geojson_comps.clearLayers();
     $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&complaint_type=Dirty+Conditions&$limit=5000&incident_zip='+layer.feature.properties.postalCode, function(zip_comps) {
-            geojson = L.geoJson(zip_comps, {
+            var comps = L.geoJson(zip_comps, {
                 pointToLayer: function(feature, latlng) {
                     return L.circleMarker(latlng, geojsonMarkerOptions);
                 }
-            }).addTo(map);
+            });
+            geojson_comps.addLayer(comps);
         });
+    map.addLayer(geojson_comps);
 });
 
 // Air Quality Complaints
 $("#airQual").click(function(){
-    map.removeLayer(geojson);
+    geojson_comps.clearLayers();
     $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&complaint_type=Air+Quality&$limit=5000&incident_zip='+layer.feature.properties.postalCode, function(zip_comps) {
-            geojson = L.geoJson(zip_comps, {
+            var comps = L.geoJson(zip_comps, {
                 pointToLayer: function(feature, latlng) {
                     return L.circleMarker(latlng, geojsonMarkerOptions);
                 }
-            }).addTo(map);
+            });
+            geojson_comps.addLayer(comps);
         });
+    map.addLayer(geojson_comps);
 });
 
 // Noise Complaints
 $("#noise").click(function(){
-    map.removeLayer(geojson);
+    geojson_comps.clearLayers();
     $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&complaint_type=Noise&$limit=5000&incident_zip='+layer.feature.properties.postalCode, function(zip_comps) {
-            geojson = L.geoJson(zip_comps, {
+            var comps = L.geoJson(zip_comps, {
                 pointToLayer: function(feature, latlng) {
                     return L.circleMarker(latlng, geojsonMarkerOptions);
                 }
-            }).addTo(map);
+            });
+            geojson_comps.addLayer(comps);
         });
+    map.addLayer(geojson_comps);
 });
 
 // Street Condition Complaints
 $("#street").click(function(){
-    map.removeLayer(geojson);
+    geojson_comps.clearLayers();
     $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&complaint_type=Street+Condition&$limit=5000&incident_zip='+layer.feature.properties.postalCode, function(zip_comps) {
-            geojson = L.geoJson(zip_comps, {
+            var comps = L.geoJson(zip_comps, {
                 pointToLayer: function(feature, latlng) {
                     return L.circleMarker(latlng, geojsonMarkerOptions);
                 }
-            }).addTo(map);
+            });
+            geojson_comps.addLayer(comps);
         });
+    map.addLayer(geojson_comps);
 });
 
 // Rodents Complaints
 $("#rodent").click(function(){
-    map.removeLayer(geojson);
+    geojson_comps.clearLayers();
     $.getJSON('https://data.cityofnewyork.us/resource/fhrw-4uyv.geojson?$$app_token=TA8ytxeF7s5CL1q8wOU1dbmnL&complaint_type=Rodent&$limit=5000&incident_zip='+layer.feature.properties.postalCode, function(zip_comps) {
-            geojson = L.geoJson(zip_comps, {
+            var comps = L.geoJson(zip_comps, {
                 pointToLayer: function(feature, latlng) {
                     return L.circleMarker(latlng, geojsonMarkerOptions);
                 }
-            }).addTo(map);
+            });
+            geojson_comps.addLayer(comps);
         });
+    map.addLayer(geojson_comps);
 });
 
 function onLocationError(e) {
