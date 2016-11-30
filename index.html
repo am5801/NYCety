@@ -10,8 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="js/leaflet.css" />
+    <script src="js/leaflet-src.js"></script>
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script> -->
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Wendy+One' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:500' rel='stylesheet' type='text/css'>
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -32,11 +38,15 @@
 
 <body>
     <!-- container-fluid encompasses entire width of viewport -->
-    <div class="container-fluid">
-        <h3>NYCety!<br />Select a 311 Complaint Type</h3>
-        <br />
+    <!-- <div class="container-fluid"> -->
+        <!-- Jumbotron Div containing Project Overview -->
+        <div class="jumbotron">
+          <h1>NYCety!</h1>
+          <h5>Welcome! Let's explore the niceties of New York City neighborhoods. Click on a zip code on the map below and select a 311 complaint type from the list of buttons.</h5>
+        </div>
+
         <div class="row">
-            <div class="col-md-12 311Options">
+            <div class="col-md-12">
                 <div class="btn-group" role="group" aria-label="...">
                     <button type="button" class="btn btn-default" id="allComp">All Complaints</button>
                     <button type="button" class="btn btn-primary" id="dirty">Dirty Conditions</button>
@@ -46,13 +56,11 @@
                     <button type="button" class="btn btn-danger" id="rodent">Rodents</button>
                     <button type="button" class="btn btn-link" id="clearComp">Clear Complaints</button>
                 </div>
-            <br/>
-            <br/>
             </div>
         </div>
+    <!-- </div> -->
 
-        <div id='map'></div>
-    </div>
+    <div id='map'></div>
 
     <!-- Our own JavaScript code -->
     <script src="js/scripts.js"></script>
